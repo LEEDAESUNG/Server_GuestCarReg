@@ -28,7 +28,16 @@ Paging = function(pageNo, totalCnt, dataSize, pageSize, token){
             s2 = pageNo - pageNo % pageSize;
         }
         html.push('<a href=javascript:goPaging_' + token + '("');
-        html.push(s2); html.push('");>');
+        // html.push(s2); html.push('");>');
+
+        html.push(s2);
+
+        html.push('"');
+        html.push(',"'); html.push(totalCnt); html.push('"');
+        html.push(',"'); html.push(dataSize); html.push('"');
+        html.push(',"'); html.push(pageSize);
+
+        html.push('");>');
         html.push('◀');
         html.push("</a>");
     }else
@@ -47,9 +56,15 @@ Paging = function(pageNo, totalCnt, dataSize, pageSize, token){
         }else{
             html.push('<a href=javascript:goPaging_' + token + '("');
             // html.push(index); html.push('");>');
-             html.push(index); html.push('");>');
+
+             html.push(index); html.push('"');
+             html.push(',"'); html.push(totalCnt); html.push('"');
+             html.push(',"'); html.push(dataSize); html.push('"');
+             html.push(',"'); html.push(pageSize);
+
+             html.push('");>');
             html.push(index); html.push('</a>');
-            // html.push(totalCnt, dataSize, pageSize,index); html.push('</a>');
+
         }
         if(index == pageCnt){
             break;
@@ -62,6 +77,12 @@ Paging = function(pageNo, totalCnt, dataSize, pageSize, token){
     if(pageCnt > (pRCnt + 1) * pageSize){
         html.push('<a href=javascript:goPaging_' + token + '("');
         html.push((pRCnt + 1)*pageSize+1);
+
+        html.push('"');
+        html.push(',"'); html.push(totalCnt); html.push('"');
+        html.push(',"'); html.push(dataSize); html.push('"');
+        html.push(',"'); html.push(pageSize);
+
         html.push('");>'); html.push('▶');
         html.push('</a>');
     }else{

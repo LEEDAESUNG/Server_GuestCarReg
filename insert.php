@@ -124,6 +124,30 @@
     }
 
 
+    //최대 중복입차건수 초과차량인지 확인
+    include "getguestconfig.php";
+    include "dbinfo.inc";
+    $sql = "SELECT INCOUNT FROM tb_guestReg_limit WHERE CAR_NO = '$guestCarno' AND DRIVER_DEPT = '$dong' AND DRIVER_CLASS = '$ho' ";
+		$result=mysqli_query($conn, $sql);
+    $total_rows = mysqli_num_rows($result);
+    if($total_rows > 0)
+    {
+      if($row = mysqli_fetch_array($result)) {
+
+          $DupinCount = $row['INCOUNT'];
+
+          if($DupinCount>=$db_guestcar_MaxDupInCar){ //limit 값 조회
+                mysqli_close($conn);
+
+                echo("
+                    <script> window.alert('중복입차횟수 초과 차량번호입니다\\n해당 차량번호는 이번 달 말까지 등록할 수 없습니다.\\n기타 문의사항은 관리실로 문의바랍니다.');
+                             window.location.replace('guestcarreg.php');
+                	  </script>
+                ");
+                exit();
+            }
+        }
+    }
 
     $dt = date("Y-m-d H:i:s");
     $sql = "insert into tb_guestReg (CAR_NO,CAR_GUBUN,CAR_FEE,DRIVER_NAME,DRIVER_PHONE,DRIVER_DEPT,DRIVER_CLASS,START_DATE,END_DATE,REG_DATE,DAY_ROTATION_YN,LANE1,LANE2,LANE3,LANE4,LANE5,LANE6,WEEK1,WEEK2,WEEK3,WEEK4,WEEK5,WEEK6,WEEK7,ROTATION,PASS_YN,GUESTREG_ID) VALUES ( '$guestCarno','방문예약','0','$guestName','$guestTel','$dong','$ho','$guestSdata','$guestEdata','$dt','적용','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','N','N','$loginID') ";

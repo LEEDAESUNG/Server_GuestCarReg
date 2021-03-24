@@ -74,11 +74,12 @@
           //     }
           // }
 
-
           $startIndex = $page*$dataSize-$dataSize;
           if($startIndex<0) $startIndex=0;
           $sql=$sql." limit $startIndex, $dataSize";
 
+
+          include "dbinfo.inc";
           //$sql="select * from tb_guestReg order by seq limit $startIndex, $dataSize";
           $result=mysqli_query($conn, $sql);
           $total_rows = mysqli_num_rows($result);

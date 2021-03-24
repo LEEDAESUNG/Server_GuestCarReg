@@ -38,23 +38,16 @@
     }
     function goPaging_PagingView(page, totalCnt, dataSize, pageSize)
     {
-        //dataSize = $("#dataSize").val();
-
-        if(!totalCnt) totalCnt = 0;
-        if(!dataSize) dataSize = 10;
-        if(!pageSize) pageSize = 10;
-
         $.ajax({
             url: "index_dataload.php",
             type: 'GET',
             data: {
               page: page,              // 현재페이지
-              dataSize: dataSize,      // 한 페이지에 보여지는 레코드
               carno:$("#carno").val(), // 차량번호
             },
             success: function(results) {
               // $("#listviewtree").ajaxComplete(function(event, request, settings)
-              // { 
+              // {
                   console.log("ajax PagingView success");
                   $("#listdata").html(results);
               //});
@@ -192,17 +185,14 @@
               var carno = decodeURI($.urlParam('carno')) //한글처리
               $('#carno').val(carno);
           }
-          var totalCnt=10;
-          var dataSize=10;
-          var pageSize=10;
+          var totalCnt=0;
+          var dataSize=0;
+          var pageSize=0;
 
           $.ajax({
                type: "GET",
                url: "getJsonGuestRegRecordCount.php",
                data: {
-                 totalCnt: totalCnt,              //현재페이지
-                 dataSize: dataSize,
-                 pageSize: pageSize,
                 },
                dataType: "json",
                async: false,
@@ -218,7 +208,7 @@
     							},
     					 error: function(jqXHR, textStatus, errorThrown) {
     									alert("ajax error : " + textStatus + "\n" + errorThrown);
-    									alert('1 정의되지 않은 에러 발생. 동일현상 반복적으로 발생시 관리실 문의바랍니다(SV_E999)');
+    									alert('정의되지 않은 에러 발생. 동일현상 반복적으로 발생시 관리실 문의바랍니다(SV_E999)');
     							}
            });
 
