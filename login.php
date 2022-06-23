@@ -8,7 +8,7 @@ if(isset($_SESSION['ss_dong']) && isset($_SESSION['ss_ho']) ) {
 <html lang="en">
 <head>
 	<!--<title>방문차량 예약 시스템</title>-->
-	<title>사전방문 예약 시스템</title>
+	<title>방문예약 시스템</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -39,8 +39,9 @@ if(isset($_SESSION['ss_dong']) && isset($_SESSION['ss_ho']) ) {
 
 	<nav class="navbar navbar-light bg-light">
 		<a class="navbar-brand mb-0 h1" href = "/guestcarreg.php" >
-			<img src="/images/icons/Parking_Red.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-			Parking System
+			<div style="color:black; font-weight:bold; font-size:1.0em;">
+      <img src="/images/icons/Parking_Red.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+      방문예약 시스템</div>
 		</a>
 	</nav>
 
@@ -49,9 +50,9 @@ if(isset($_SESSION['ss_dong']) && isset($_SESSION['ss_ho']) ) {
 			<div class="wrap-login100 p-t-50 p-b-90">
 				<form class="login100-form validate-form flex-sb flex-w" method="post" action="login_ok.php">
 					<!-- <span class="login100-form-title p-b-51">
-						사전방문 예약 시스템
+						방문예약 시스템
 					</span> -->
-					<img class="wrap-input100 validate-input m-b-16"  src="/images/icons/raewmian.jpg" align = 'center' ></a>
+					<img class="wrap-input100 validate-input m-b-16"  src="/images/icons/bi.jpg" align = 'center' ></a>
 
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "아이디를 입력하세요">
 						<input class="input100" type="text" name="LoginID" placeholder="아이디" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='아이디';">

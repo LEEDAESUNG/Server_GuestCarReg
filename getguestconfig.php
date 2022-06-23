@@ -9,6 +9,7 @@
     $db_guestcarreg_MaxParkTime = "";
     $db_guestcar_MaxDupInCar = "";      //중복입차 허용횟수
     $db_guestcarreg_VisitCount = "";
+    $db_guestcar_AcceptOverCount = "";
 
     $conn=mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname);
     $sql = "select * from tb_config where Title = '방문예약'; ";
@@ -47,8 +48,15 @@
             }
         }
 
+        //방문예약등록횟수초과시 계속등록가능 여부 가져오기
+        else if($row['Name'] == "GuestCarReg_AcceptOverCount"){
+            $db_guestcar_AcceptOverCount = $row['Content'];
+            if(!$db_guestcar_AcceptOverCount){
+                $db_guestcar_AcceptOverCount = "N";
+            }
+        }
     }
 
     mysqli_close($conn);
-    
+
 ?>

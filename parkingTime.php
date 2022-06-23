@@ -55,7 +55,7 @@
         <button class="btn btn-primary" id="menu-toggle">메뉴</button>
 
 &nbsp;&nbsp;&nbsp;&nbsp;
-<input type="submit" class="btn btn-info" value="방문예약내역">
+<input type="submit" class="btn btn-info" value="출차차량내역">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -79,9 +79,9 @@
               <tr>
                   <th>
                     <input type="text" name="carno" id="carno" placeholder="차량번호 4자리(숫자)" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='차량번호 4자리(숫자)';">&nbsp;&nbsp;
-                    등록일자:
-                    <input type="text" name="sdate" id="GuestInDate" placeholder="등록 시작날자">~
-                    <input type="text" name="edate" id="GuestOutDate" placeholder="등록 종료날자"/>
+                    입차일자:
+                    <input type="text" name="sdate" id="GuestInDate" placeholder="입차 시작날자">~
+                    <input type="text" name="edate" id="GuestOutDate" placeholder="입차 종료날자"/>
                     <button type="submit" id="search">검색</button>
                   </th>
               </tr>
@@ -265,7 +265,7 @@
      //차량별 중복건수
      $("#search").click(function() {
         //e.preventDefault(); // html에서 <a>, <submit 등의 동작중지한다
-        procUrl = "guestcarRegList.php";
+        procUrl = "parkingTimeList.php";
 
        $.ajax({
               url: procUrl,

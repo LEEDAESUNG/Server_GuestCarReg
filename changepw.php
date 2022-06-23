@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>방문차량 예약 시스템</title>
+  <title>방문예약시스템(입주민)</title>
   <link rel="icon" type="image/png" href="images/icons/Parking_Red.ico"/>
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -101,31 +101,24 @@ $(document).ready(function(){
   <body>
 		<nav class="navbar navbar-light bg-light">
     <a class="navbar-brand mb-0 h1" href = "/guestcarreg.php" >
+      <div style="color:black; font-weight:bold; font-size:1.0em;">
       <img src="/images/icons/Parking_Red.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-      사전방문예약
+      방문예약시스템</div>
     </a>
     </nav>
 
   <div class="d-flex" id="wrapper">
 
-    <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <!-- <div class="sidebar-heading">  </div> -->
-      <div class="list-group list-group-flush">
-        <a href="/guestcarreg.php" class="list-group-item list-group-item-action bg-light"><img src="/images/icons/raewmian.jpg" align = 'center' width = 200></a>
-        <a href="/guestcarreg.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-plus"></span>&nbsp;&nbsp;&nbsp;방문예약등록</a>
-        <a href="/index.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-note"></span>&nbsp;&nbsp;&nbsp;방문예약내역</a>
-        <a href="/changepw.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-locked"></span>&nbsp;&nbsp;&nbsp;비밀번호변경</a>
-        <a href="/logout.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-extlink"></span>&nbsp;&nbsp;&nbsp;로그아웃</a>
-      </div>
-    </div>
-    <!-- /#sidebar-wrapper -->
+    <?php include "Leftmenu.php" ?>
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <button class="btn btn-primary" id="menu-toggle">메뉴</button>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" class="btn btn-info" value="비밀번호변경">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -138,7 +131,8 @@ $(document).ready(function(){
 		        <head>
 								<br>
 						    <div >
-						      <img src="/images/icons/key2.ico" width="30" height="30"/>
+						      <!-- <img src="/images/icons/key2.ico" width="30" height="30"/> -->
+                  <img src="/images/icons/key2.png" />
 						    </div>
 						    <div>
 						      <input type="text" id="InputNowPassword" name="InputNowPassword" placeholder="현재 비밀번호">

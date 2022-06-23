@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>방문차량 예약 시스템</title>
+  <title>방문예약시스템(입주민)</title>
   <link rel="icon" type="image/png" href="images/icons/Parking_Red.ico"/>
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -20,53 +20,6 @@
 <script type="text/javascript">
 
 </script>
-  <!--
-      <script type="text/javascript">
-        //document.getElementById('GuestInDate').valueAsDate = new Date();
-        //document.getElementById('GuestOutDate').valueAsDate = new Date();
-        //let outDate = new Date();
-        //outDate.setDate(outDate.getDate() + 4);
-        //document.getElementById('GuestOutDate').valueAsDate = outDate;
-
-        $(function() {
-          $("#date1").datepicker({
-            showOn: "both",
-            buttonImage: "images/calendar.gif",
-            buttonImageOnly: true,
-            buttonText: "Select date"
-          });
-          $("#date3").datepicker({
-              onSelect:function(dateText, inst) {
-                  console.log(dateText);
-              }
-          });
-
-          $( "#GuestInDate" ).datepicker(
-               {
-                  maxDate: '0',
-                  beforeShow : function()
-                  {
-                    jQuery( this ).datepicker('option','maxDate', jQuery('#GuestOutDate').val() );
-                  },
-                  altFormat: "dd/mm/yy",
-                  dateFormat: 'dd/mm/yy'
-                }
-        );
-        $( "#GuestOutDate" ).datepicker(
-             {
-              minDate: '0',
-              maxDate: '4',
-              beforeShow : function()
-              {
-                jQuery( this ).datepicker('option','minDate', jQuery('#GuestInDate').val() );
-              } ,
-              altFormat: "dd/mm/yy",
-              dateFormat: 'dd/mm/yy'
-            }
-        );
-      });
-      </script>
--->
 
 </head>
 
@@ -80,35 +33,21 @@
         echo("<script>location.href='login.php';</script>");
         exit();
     } else {
-        //$username = $_SESSION['username'];
-        //$userpass = $_SESSION['userpass'];
-        //echo "<p><strong>$_SESSION['username'].</strong>님 환영합니다.";
-        //echo "<a href=\"logout.php\">[로그아웃]</a></p>";
     }
   ?>
 
   <body>
     <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand mb-0 h1" href = "/guestcarreg.php" >
+      <div style="color:black; font-weight:bold; font-size:1.0em;">
       <img src="/images/icons/Parking_Red.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-      사전방문예약
+      방문예약시스템</div>
     </a>
     </nav>
 
   <div class="d-flex" id="wrapper">
 
-    <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <!--<div class="sidebar-heading"> </div> -->
-      <div class="list-group list-group-flush">
-        <a href="/guestcarreg.php" class="list-group-item list-group-item-action bg-light"><img src="/images/icons/raewmian.jpg" align = 'center' width = 200></a>
-        <a href="/guestcarreg.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-plus"></span>&nbsp;&nbsp;&nbsp;방문예약등록</a>
-        <a href="/index.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-note"></span>&nbsp;&nbsp;&nbsp;방문예약내역</a>
-        <a href="/changepw.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-locked"></span>&nbsp;&nbsp;&nbsp;비밀번호변경</a>
-        <a href="/logout.php" class="list-group-item list-group-item-action bg-light"><span class="ui-icon ui-icon-extlink"></span>&nbsp;&nbsp;&nbsp;로그아웃</a>
-      </div>
-    </div>
-    <!-- /#sidebar-wrapper -->
+    <?php include "Leftmenu.php" ?>
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
@@ -116,6 +55,8 @@
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <button class="btn btn-primary" id="menu-toggle">메뉴</button>
 
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" class="btn btn-info" value="방문예약등록">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -130,6 +71,7 @@
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // 최대주차일수 가져오기
             include "getParkDay.php";
+
             // include "dbinfo.inc";
             // $ParkCount = 5; // 사전방문 최대등록수(월) - default
             // $ParkDay = 3; // 사전방문 최대주차일수() - default
@@ -377,12 +319,15 @@
                   //var myMaxDate = nCalc + 3;
                   //document.write("aArr:"+aArr+", bArr:"+bArr+"nCalc:" + nCalc);
 
-                  var nCalc = fn_calcDayMonthCount(aArr[0]+aArr[1]+aArr[2], bArr[0]+bArr[1]+bArr[2], 'D')
+                  var nCalc = fn_calcDayMonthCount(aArr[0]+aArr[1]+aArr[2], bArr[0]+bArr[1]+bArr[2], 'D') -1;
 
                   //var myMaxDate = nCalc + 3;
                   //var myMaxDate = nCalc + jQuery('#GuestParkDay').val();
                   var myMaxDate = nCalc + parseInt($('#GuestParkDay').val()); //최대주차일수
-
+                  if(myMinDate>myMaxDate)
+                  {
+                    myMaxDate=myMinDate;
+                  }
                   // 종료일 최소값, 최대값 지정
                   jQuery(this).datepicker('option', 'minDate', myMinDate);
                   jQuery(this).datepicker('option', 'maxDate', myMaxDate);

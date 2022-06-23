@@ -1,0 +1,2 @@
+테이블명 변경에 따라 수정
+tb_guestreg_limit -> tb_guestreg_parkcount

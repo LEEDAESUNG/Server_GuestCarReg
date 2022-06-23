@@ -29,7 +29,7 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 <link href="./bootstrap-4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="./css/style.css" media="screen" title="no title" charset="utf-8">
+<!-- <link rel="stylesheet" href="./css/style.css" media="screen" title="no title" charset="utf-8"> -->
 
 
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
@@ -187,6 +187,39 @@ function NumeircCheckFunc(obj){
 		num = str.replace(/[^0-9]/g, '');
 		obj.value = num;
 }
+
+function zeroFillDong(target, width) {
+  // var n = target.value;
+  //var id = target.id;
+	var n = document.getElementById('inputDong').value;
+  var id = 'inputDong';
+
+  n = n + "";
+  if(n.length >= width){
+   document.getElementById(id).value = n;
+ }else if(n.length>0){
+   document.getElementById(id).value = new Array(width - n.length + 1).join('0') + n;
+ }else if(n.length==0){
+	 //document.getElementById(id).value = '*동(숫자)';
+ }
+
+
+	document.getElementById('inputID').value = document.getElementById('inputDong').value + document.getElementById('inputHo').value;
+}
+function zeroFillHo(target, width) {
+	var n = document.getElementById('inputHo').value;
+  var id = 'inputHo';
+  n = n + "";
+  if(n.length >= width){
+   document.getElementById(id).value = n;
+  }else if(n.length>0){
+   document.getElementById(id).value = new Array(width - n.length + 1).join('0') + n;
+  }else if(n.length==0){
+ 	 //document.getElementById(id).value = '*호(숫자)';
+  }
+
+	document.getElementById('inputID').value = document.getElementById('inputDong').value + document.getElementById('inputHo').value;
+}
 </script>
 
 <script type="text/javascript">
@@ -220,6 +253,49 @@ function NumeircCheckFunc(obj){
 					$(this).val(num);
 			});
 
+			// $("#inputDong").on('keyup', function(e){
+			// 		str = $(this).val().replace(/[^0-9]/g, '');
+			// 		nStr = parseInt(str); //정수
+			// 		var tmp = '';
+			// 		if( nStr.length > 4){
+			// 				tmp = nStr.substr(0, 4);
+			// 		}
+			// 		else {
+			// 				tmp = nStr;
+			// 				//tmp = new Array(4 - str.length + 1).join('0') + str;
+			// 		}
+			// 		$(this).val(tmp);
+			// 		$("#inputID").val( $("#inputDong").val() + $("#inputHo").val() );
+			// });
+
+			// $("#inputDong").blur(function(){
+			// 	//$("#inputID").val( $(this).val());
+      // });
+			// $("#inputHo").on('keyup', function(e){
+			// 		str = $(this).val().replace(/[^0-9]/g, '');
+			// 		var tmp = '';
+			// 		if( str.length > 4){
+			// 				tmp = str.substr(0, 4);
+			// 		}
+			// 		else {
+			// 				tmp = str;
+			// 		}
+			// 		$(this).val(tmp);
+			// 		$("#inputID").val($("#inputDong").val() + $("#inputHo").val());
+			// });
+
+
+			$("#inputID").on('keyup', function(e){
+					str = $(this).val().replace(/[^0-9]/g, '');
+					var tmp = '';
+					if( str.length > 8){
+							tmp = str.substr(0, 8);
+					}
+					else {
+							tmp = str;
+					}
+					$(this).val(tmp);
+			});
 
 			$("#inputMobile").on('keyup', function(e){
 					str = $(this).val().replace(/[^0-9]/g, '');
@@ -260,20 +336,38 @@ function NumeircCheckFunc(obj){
 							return false;
 					}
 					if($("#inputDong").val() ==''){
-							alert('동을 입력하세요');
+							alert('동을 입력하세요(숫자4자리)');
 							$("#inputDong").focus();
 							return false;
+					}else if(($("#inputDong").val()).length <4){
+						alert('동을 입력하세요(숫자4자리)');
+						$("#inputDong").val("");
+						$("#inputDong").focus();
+						return false;
 					}
+
 					if($("#inputHo").val() ==''){
-							alert('호수를 입력하세요');
+							alert('호수를 입력하세요(숫자4자리)');
 							$("#inputHo").focus();
 							return false;
+					}else if(($("#inputHo").val()).length <4){
+						alert('호수를 입력하세요(숫자4자리)');
+						$("#inputHo").val("");
+						$("#inputHo").focus();
+						return false;
 					}
+
 					if($("#inputID").val() ==''){
 							alert('아이디를 입력하세요');
 							$("#inputID").focus();
 							return false;
+					}else if(($("#inputID").val()).length != 8){
+						alert('아이디를 입력하세요(동+호수)');
+						$("#inputID").val("");
+						$("#inputID").focus();
+						return false;
 					}
+
 					if($("#inputPassword").val() ==''){
 							alert('비밀번호를 입력하세요');
 							$("#inputPassword").focus();
@@ -313,16 +407,23 @@ function NumeircCheckFunc(obj){
 							dataType: "json",
 							success: function (response) {
 									if(response.result == 1){
-											alert('가입 완료됐습니다. 로그인 후 즉시 이용할 수 있습니다');
+											alert('가입 완료했습니다. 로그인 후 즉시 이용할 수 있습니다');
 											location.replace('/login.php');
 									} else if(response.result == 2){
-											alert('가입신청 완료됐니다. 관리실로 [사전방문예약] 승인요청 하세요');
+											//alert('가입신청 완료했습니다. 관리실로 [방문예약] 승인요청 하세요');
+											alert(response.message);
 											location.replace('/login.php');
 									} else if(response.result == 0){
 											alert('사용할 수 없는 아이디 입니다. 관리실로 문의바랍니다(에러코드:SU_E001)');
-											//.id.setfocus(); //에러
 									} else if(response.result == -1){
 											alert('가입신청 처리중 에러가 발생했습니다. 잠시후 재시도하세요(SU_E002)');
+									} else if(response.result == -2){
+											//alert('해당 아이디는 [승인대기]상태입니다. 승인요청은 관리실로 문의바랍니다');
+											alert(response.message);
+											location.replace('/login.php');
+									} else if(response.result == -3){
+											alert(response.message);
+											location.replace('/login.php');
 									} else {
 											alert('가입신청 처리중 에러가 발생했습니다. 잠시후 재시도하세요(SU_E003)');
 									}
@@ -342,8 +443,9 @@ function NumeircCheckFunc(obj){
 <body>
 	<nav class="navbar navbar-light bg-light">
 		<a class="navbar-brand mb-0 h1" href = "/guestcarreg.php" >
-	    <img src="/images/icons/Parking_Red.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-	    Parking System
+			<div style="color:black; font-weight:bold; font-size:1.0em;">
+      <img src="/images/icons/Parking_Red.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+      방문예약 시스템</div>
 	  </a>
 	</nav>
 					<form role="form">
@@ -351,7 +453,9 @@ function NumeircCheckFunc(obj){
 
 							<tr style="width:100%;"></tr>
 							<tr style="width:100%;">
-								<td colspan='2' align='center' style="font-size:30px" >사전방문 예약시스템<br>(가입신청)</td>
+								<!-- <td colspan='2' align='center' style="font-size:30px" >방문 예약시스템<br>(가입신청)</td> -->
+								<td></td>
+								<td align='left' style="font-size:30px" ><가입신청></td>
 							</tr>
 
 							<tr></tr>
@@ -362,15 +466,22 @@ function NumeircCheckFunc(obj){
 			        </tr>
 							<tr>
 									<th style="width:50%; text-align:right;">동&nbsp;</th>
-	                <th><input style="background-color:#e6e6e6; line-height:1.8; " type="text" numberOnly name="dong" id="inputDong" placeholder="*동" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*동'; NumeircCheckFunc(this);"></th>
+	                <th>
+										<!-- <input style="background-color:#e6e6e6; line-height:1.8; " type="text" numberOnly name="dong" id="inputDong" placeholder="*동(숫자)" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*동(숫자)'; NumeircCheckFunc(this);"> -->
+										<input style="background-color:#e6e6e6; line-height:1.8;" type="text" numberOnly id="inputDong" maxlength="4" placeholder="*동(숫자)" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*동(숫자)'; zeroFillDong(this, 4);" />
+									</th>
 			        </tr>
 							<div>
 									<th style="width:50%; text-align:right;">호수&nbsp;</th>
-	                <th><input style="background-color:#e6e6e6; line-height:1.8; " type="text" numberOnly name="ho" id="inputHo" placeholder="*호수" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*호수'; NumeircCheckFunc(this);"></th>
+	                <th>
+										<!-- <input style="background-color:#e6e6e6; line-height:1.8; " type="text" numberOnly name="ho" id="inputHo" placeholder="*호(숫자)" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*호(숫자)'; NumeircCheckFunc(this);"> -->
+										<input style="background-color:#e6e6e6; line-height:1.8;" type="text" numberOnly id="inputHo" maxlength="4" placeholder="*호(숫자)" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*호(숫자)'; zeroFillHo(this, 4);" />
+									</th>
 			        </tr>
 							<tr>
 									<th style="width:50%; text-align:right;">아이디&nbsp;</th>
-	                <th><input style="background-color:#e6e6e6; line-height:1.8; " type="text" name="id" id="inputID" placeholder="*아이디" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*아이디';"></th>
+									<!-- <th><input style="background-color:#e6e6e6; line-height:1.8; " type="text" name="id" id="inputID" placeholder="*아이디(동+호수 8자리)" onfocus="this.placeholder = ''" onblur="if(this.placeholder=='')this.placeholder='*아이디(동+호수 8자리)';" readonly></th> -->
+									<th><input style="background-color:grey; line-height:1.8; " type="text" name="id" id="inputID" readonly></th>
 			        </tr>
 
 							<tr class=inputPW1>

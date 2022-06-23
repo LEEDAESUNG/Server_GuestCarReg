@@ -1,36 +1,5 @@
 
 <?php
-              // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-              // // 사전방문예약 남은건수/최대주차가능건수 표시
-              // include "dbinfo.inc";
-              // $loginID = $_SESSION['ss_loginID'];
-              // $ParkCount = 0; // 사전방문 최대등록수(월) - default
-              // $UseCount = 0; // 등록건수(월)
-              // $ParkTime = 0; // 주차시간
-              // $UseTime = 0; // 주차시간
-              // $sql = "SELECT * FROM tb_guestreg_admin WHERE ID = '$loginID' ";
-              // $result=mysqli_query($conn, $sql);
-          		// $num_match=mysqli_num_rows($result);
-          		// if(!$num_match) {
-              //   mysqli_close($conn);
-              //
-          		// 	echo("
-          		// 		<script> window.alert('아이디 정보가 만료됐습니다. 다시 로그인해주세요(L000002)')
-          		// 		window.location.replace('logout.php');
-          		// 		</script>
-          		// 	");
-              //   exit();
-              //
-          		// } else {
-          		// 	$row = mysqli_fetch_array($result);
-              //   $ParkTime = $row['MAXPARKTIME']; // 사전방문 최대등록가능건수(월)
-              //   $UseTime = $row['NOWPARKTIME']; // 사전방문 등록건수(월)
-              //   $ParkCount = $row['MAXPARKCOUNT']; // 사전방문 최대등록가능건수(월)
-              //   $UseCount = $row['NOWPARKCOUNT']; // 사전방문 등록건수(월)
-              // }
-              // mysqli_close($conn);
-              // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 //방문예약차량 주차시간 잔량
                 include "dbinfo.inc";
                 $id = $_SESSION['ss_loginID'];
@@ -41,44 +10,48 @@
                 $db_maxparkcount = 0;
                 $db_nowparkcount = 0;
                 //$dt = date("Y-m-d").' 00:00:00'; //오늘날짜
+                $thisMonth = date("Y-m").'-01 00:00:00';
 
-                // 방법1) 가장 정확하지만 다중 접속시 시간지연 발생소지
-                // $startDT = date("Y-m").'-01 00:00:00'; //매달 1일
-                // $sql = "select sum(PARKTIME) as PARKTIME from tb_guestReg_daily where DRIVER_DEPT = '$dong' and DRIVER_CLASS = '$ho' AND REG_DATE>'$startDT' GROUP BY DRIVER_DEPT,DRIVER_CLASS ";
-                // $result=mysqli_query($conn, $sql);
-                // $total_rows = mysqli_num_rows($result);
-                // if($row = mysqli_fetch_array($result))
-                // {
-                //   $db_parktime = $row['PARKTIME']; //주차시간
-                // }
-
-                //방법2)
-                // $startDT = date("Y-m").'-01 00:00:00'; //매달 1일
-                // $sql = "select sum(NOWPARKTIME) as PARKTIME from tb_guestreg_admin where DRIVER_DEPT = '$dong' and DRIVER_CLASS = '$ho' GROUP BY DRIVER_DEPT,DRIVER_CLASS ";
-                // $result=mysqli_query($conn, $sql);
-                // $total_rows = mysqli_num_rows($result);
-                // if($row = mysqli_fetch_array($result))
-                // {
-                //   $db_parktime = $row['PARKTIME']; //주차시간
-                // }
+                //동,호수 4자리로 변환
+                $dong = (int)$dong;
+                $dong2 = sprintf('%04d',$dong);
+                $ho = (int)$ho;
+                $ho2 = sprintf('%04d',$ho);
 
 
-                //동호수별 최대 주치가능 시간
-                //$sql = "select * from tb_guestReg_admin where DRIVER_DEPT = '$dong' and DRIVER_CLASS = '$ho' ";
-                //$sql = "select * from tb_guestReg_admin where ID = '$id' ";
-                $sql = "select * from tb_guestReg_admin where DRIVER_DEPT = '$dong' and DRIVER_CLASS = '$ho' ";
+                //월 최대 등록횟수, 최대 주차시간 가져오기
+                $sql = "select * from tb_guestreg_admin where ID='$id' ";
                 $result=mysqli_query($conn, $sql);
                 $total_rows = mysqli_num_rows($result);
                 while($row = mysqli_fetch_array($result))
                 {
-                  $db_maxparkcount = $row['MAXPARKCOUNT']; //최대 주차횟수(월)
-                  $db_nowparkcount = $db_nowparkcount + $row['NOWPARKCOUNT']; //1일~현재까지 주차횟수(월)
-                  $db_maxparktime = $row['MAXPARKTIME']; //주차시간
-                  $db_nowparktime = $db_nowparktime + $row['NOWPARKTIME']; //1일~현재까지 주차시간(월)
+                  $db_maxparkcount = $row['MAXPARKCOUNT']; //월 최대등록 횟수
+                  $db_maxparktime = $row['MAXPARKTIME']; //월 최대주차 시간(출구LPR 필요함)
                 }
-                $db_nowparktime = $db_nowparktime;
+                //mysqli_close($conn);
 
+
+                //이번달 등록횟수 가져오기
+                $sql = "select COUNT(*) AS regcount from tb_guestreg where GUESTREG_ID='$id' and REG_DATE >= '$thisMonth' ";
+                $result=mysqli_query($conn, $sql);
+                $total_rows = mysqli_num_rows($result);
+                while($row = mysqli_fetch_array($result))
+                {
+                  $db_nowparkcount = $row['regcount'];
+                }
+                //mysqli_close($conn);
+
+
+                //이번달 주차시간 가져오기
+                $sql = "select * from tb_guestReg_parktime where (DRIVER_DEPT='$dong' or DRIVER_DEPT='$dong2') and (DRIVER_CLASS='$ho' or DRIVER_CLASS='$ho2') and REG_DATE >= '$thisMonth' ";
+                $result=mysqli_query($conn, $sql);
+                $total_rows = mysqli_num_rows($result);
+                while($row = mysqli_fetch_array($result))
+                {
+                  $db_nowparktime = $db_nowparktime + $row['PARKTIME']; //1일~현재까지 주차시간(월)
+                }
                 mysqli_close($conn);
+
 
                 if( $db_maxparktime >0) {
                     if( $db_maxparktime-$db_nowparktime>0) {
@@ -113,6 +86,9 @@
                     echo " / ";
                     echo $db_maxparkcount;
                     echo " (회,매월)";
+                    if( $db_maxparkcount<$db_nowparkcount) {
+                      echo "<span style='color:red; font-weight:bold; font-size:0.9em;'> - 월 이용횟수를 초과했습니다 ";
+                    }
                     echo "</span>";
                     echo "<br>";
                 }
