@@ -60,11 +60,18 @@
                     else {
                       echo "<span style='color:red; font-weight:bold; font-size:0.9em;'>주차시간 : ";
                     }
-                    echo $db_nowparktime;
+                    echo number_format($db_nowparktime);
                     echo " / ";
-                    echo $db_maxparktime;
-                    echo " (분,매월)";
+                    echo number_format($db_maxparktime);
+                    echo " (분,월)";
                     echo "</span>";
+                    echo "<br>";
+
+                    echo "<span style='color:red; font-weight:bold; font-size:0.9em;'>";
+                    echo "월 ".number_format($db_maxparktime)."(분) 초과 사용시 비용발생";
+                    echo "<br>";
+                    echo "<span style='color:red; font-weight:bold; font-size:0.9em;'>";
+                    echo "초과 분당 20원 부과 또는 한대 차량이 ".number_format($db_maxparktime)."(분) 초과시 1대 추가등록 금액 부과";
                     echo "<br>";
 
                     // echo "<span style='color:orange; font-weight:bold; font-size:0.9em;'>남은주차시간 : ";
@@ -90,6 +97,9 @@
                       echo "<span style='color:red; font-weight:bold; font-size:0.9em;'> - 월 이용횟수를 초과했습니다 ";
                     }
                     echo "</span>";
+                    echo "<br>";
+
+                    echo "<span style='color:red; font-weight:bold; font-size:0.9em;'>*방문예약횟수 초과시 관리비에 부과됩니다 ";
                     echo "<br>";
                 }
 
