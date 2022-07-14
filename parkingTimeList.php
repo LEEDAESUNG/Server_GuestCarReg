@@ -15,7 +15,6 @@
 
               include "parkingTimeListSQL.php";
 
-
               include "dbinfo.inc";
               $total_parktime = 0;
 

@@ -42,6 +42,12 @@ session_start();
       $ho2 = "-";
     }
 
+    //동,호수 3자리 경우 4자리로 변환
+    $dong = (int)$dong;
+    $dong2 = sprintf('%04d',$dong);
+    $ho = (int)$ho;
+    $ho2 = sprintf('%04d',$ho);
+
     if(isset($_GET['id'])) {
       $id = $_GET['id'];
     }
